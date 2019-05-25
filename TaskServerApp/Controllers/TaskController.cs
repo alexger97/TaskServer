@@ -26,16 +26,22 @@ namespace TaskServerApp
         // GET api/values
         [HttpGet("GetAllTasks")]
         [HttpGet("GetAllTasks/{id}")]
-        public List<MyTask> GetAllTask(int id)
+        public List<IMyTask> GetAllTask(int id)
         {
-            return context.Tasks.ToList<MyTask>();
+            List<IMyTask> tt=new List<IMyTask>();
+            foreach(MyTask cc in context.Tasks.ToList())
+            {
+                tt.Add(cc);
+            }
+
+            return tt;
         }
 
 
         [HttpGet("{id}")]
         public MyTask Get(int id)
         {
-            if (context.Tasks.ToList<MyTask>().Exists(x => x.Id == id))
+            if (context.Tasks.ToList<IMyTask>().Exists(x => x.Id == id))
                 return context.Tasks.First(x => x.Id == id);
             return null;
         }
@@ -56,7 +62,7 @@ namespace TaskServerApp
         }
 
         [HttpPut]
-        public ActionResult Put(MyTask task)
+        public ActionResult Put(IMyTask task)
         {
             if (context.Tasks.Any(x => x.Id == task.Id))
             {

@@ -8,8 +8,8 @@ using TaskServerApp;
 namespace TaskServerApp.Migrations
 {
     [DbContext(typeof(AppDataBaseContext))]
-    [Migration("20190523003418_first")]
-    partial class first
+    [Migration("20190524205536_one")]
+    partial class one
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

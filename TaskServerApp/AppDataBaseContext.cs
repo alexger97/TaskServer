@@ -14,6 +14,8 @@ namespace TaskServerApp
 
         }
         public DbSet<MyTask> Tasks { get; set; }
-        
+
+       // public DbSet<User> Users   { get; set; }
+
     }
 }
