@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,15 +17,18 @@ namespace TaskServerApp.Models
         public bool Urgency { get; set; }
 
 
-     
+      //  [ForeignKey("UserId")]
+       public int UserId { get; set; }
+      /// [ForeignKey("UserId")]
+       // [NotMapped]
+    //   public IUser TaskUser { get; set; }
+       
 
 
-        //   [ForeignKey("UserId")]
-        //  public int UserId { get; set; }
 
         // Ссылка на пользователя
 
-        //  public User User { get; set; }
+
 
 
         public MyTask(int id,string Name, string Description, bool Importance, bool Urgency)

@@ -12,7 +12,11 @@ namespace TaskServerApp.Models
         string Description { get; set; }
         bool Importance { get; set; }
         bool Urgency { get; set; }
-        
+
+        int UserId { get; set; }
+
+
+      
 
     }
 }

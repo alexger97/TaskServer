@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TaskServerApp.Controllers;
 using TaskServerApp.Models;
 
 
@@ -13,27 +14,32 @@ namespace TaskServerApp
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TaskController : ControllerBase
+    public class TaskController : ControllerBase,ITaskController
     {
-        private AppDataBaseContext context;
-
-        public TaskController(AppDataBaseContext context)
+        private AppDataBaseContextSL context;
+        private UserController userController;
+        public TaskController(AppDataBaseContextSL context)
         {
             this.context = context;
+            this.userController = new UserController(context);
+                //(UserController)userController;
         }
 
 
         // GET api/values
         [HttpGet("GetAllTasks")]
         [HttpGet("GetAllTasks/{id}")]
-        public List<IMyTask> GetAllTask(int id)
+        public List<MyTask> GetAllTask(int id)
         {
-            List<IMyTask> tt=new List<IMyTask>();
-            foreach(MyTask cc in context.Tasks.ToList())
+
+            List<MyTask> tt=new List<MyTask>();
+            try { 
+            foreach(MyTask cc in context.Tasks.Where(x=>x.UserId==id).ToList())
             {
                 tt.Add(cc);
             }
-
+            }
+            catch { return null; }
             return tt;
         }
 
@@ -51,13 +57,21 @@ namespace TaskServerApp
         public ActionResult Post([FromBody] MyTask task)
         {
 
-            if (context.Tasks.Any(x => x.Id == task.Id))
+            //if (userController.ChekUser(task.TaskUser))
+           // {
+                if (context.Tasks.Any(x => x.Id == task.Id))
+                {
+                    Put(task);
+                }
+            try
             {
-                Put(task);
+                context.Tasks.Add((MyTask)task);
+                context.SaveChanges();
+                return this.Ok();
             }
-            context.Tasks.Add(task);
-            context.SaveChanges();
-            return this.Ok();
+            catch { return this.StatusCode((int)HttpStatusCode.Unauthorized); }
+           
+           
 
         }
 

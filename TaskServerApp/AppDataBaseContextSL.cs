@@ -7,15 +7,15 @@ using TaskServerApp.Models;
 
 namespace TaskServerApp
 {
-    public class AppDataBaseContext:DbContext
+    public class AppDataBaseContextSL:DbContext
     {
-        public AppDataBaseContext(DbContextOptions<AppDataBaseContext> options):base (options)
+        public AppDataBaseContextSL(DbContextOptions<AppDataBaseContextSL> options):base (options)
         {
 
         }
         public DbSet<MyTask> Tasks { get; set; }
 
-       // public DbSet<User> Users   { get; set; }
+        public DbSet<User> Users   { get; set; }
 
     }
 }

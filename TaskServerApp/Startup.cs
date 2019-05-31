@@ -5,6 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using TaskServerApp.Models;
+using TaskServerApp.Controllers;
+using Microsoft.IdentityModel.Protocols;
 
 namespace TaskServerApp
 {
@@ -20,12 +23,21 @@ namespace TaskServerApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           // services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            // services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            //services.AddSingleton<IUserController, UserController>();
+            //services.AddSingleton<ITaskController, TaskController>();
+            services.AddDbContextPool<AppDataBaseContextSL>(
 
-            services.AddDbContextPool<AppDataBaseContext>(
-               options => options.UseMySql($"server=localhost;user id=root;database={nameof(AppDataBaseContext)};password=123456;"));
+                //options => options.UseSqlServer($"Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = {nameof(AppDataBaseContextSL)}; Integrated Security = True; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False"));
+                options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
 
+                    //$"Data Source = taskserverappdbserver.database.windows.net; User ID = task_root;Initial Catalog ={nameof(AppDataBaseContextSL)} ; Password = TTT@@!2019au; Connect Timeout = 30; Encrypt = True; TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False"));
+
+                //  ($"Server = tcp:taskserverappdbserver.database.windows.net, 1433; Initial Catalog = appdatabasecontext; Persist Security Info = False; User ID =task-root; Password =TTT@@!2019au; MultipleActiveResultSets = False; Encrypt = True; TrustServerCertificate = False; Connection Timeout = 30;"));
+                // Data Source = taskserverappdbserver.database.windows.net; User ID = task_root; Password = ********; Connect Timeout = 30; Encrypt = True; TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False
+            { }
+            
             services.AddMvc();
         }
 
